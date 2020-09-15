@@ -1,0 +1,29 @@
+name: Build and test fconvert
+
+on:
+  push:
+    branches: [master]
+
+  pull_request:
+    branches: [master]
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [3.6, 3.7, 3.8]
+    runs-on: ubuntu-latest
+    name: Run tests on Python ${{ matrix.python-version }}
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        pip install pytest
+    - name: Run tests
+      run: |
+        python -m pytest
